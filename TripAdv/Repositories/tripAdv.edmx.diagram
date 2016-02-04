@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4fbf13c667ea4e2ea1f2c8f15f696dc1" Name="Diagram1">
+        <EntityTypeShape EntityType="OnATripModel.Activity" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="OnATripModel.ActivityActivityTypeMap" Width="1.5" PointX="7.5" PointY="5.25" />
+        <EntityTypeShape EntityType="OnATripModel.ActivityRating" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="OnATripModel.ActivityType" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="OnATripModel.Login" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="OnATripModel.Trip" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="OnATripModel.User" Width="1.5" PointX="0.75" PointY="3.25" />
+        <AssociationConnector Association="OnATripModel.FK_Activity_Trip" />
+        <AssociationConnector Association="OnATripModel.FK_ActivityActivityTypeMap_Activity" />
+        <AssociationConnector Association="OnATripModel.FK_ActivityActivityTypeMap_ActivityType" />
+        <AssociationConnector Association="OnATripModel.FK_ActivityType_ActivityType" />
+        <AssociationConnector Association="OnATripModel.FK_Login_Login" />
+        <AssociationConnector Association="OnATripModel.FK_Login_User" />
+        <AssociationConnector Association="OnATripModel.FK_Trip_User" />
+        <EntityTypeShape EntityType="OnATripModel.country" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="OnATripModel.TripMember" Width="1.5" PointX="7.375" PointY="8.75" />
+        <AssociationConnector Association="OnATripModel.FK_TripMember_Trip" />
+        <AssociationConnector Association="OnATripModel.FK_TripMember_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

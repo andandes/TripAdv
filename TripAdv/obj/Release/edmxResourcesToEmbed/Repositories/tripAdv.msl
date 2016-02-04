@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OnATripModelStoreContainer" CdmEntityContainer="OnATripEntities">
+    <EntitySetMapping Name="Activities">
+      <EntityTypeMapping TypeName="OnATripModel.Activity">
+        <MappingFragment StoreEntitySet="Activity">
+          <ScalarProperty Name="DiaryTime" ColumnName="DiaryTime" />
+          <ScalarProperty Name="TripID" ColumnName="TripID" />
+          <ScalarProperty Name="GoogleMapsPlaceID" ColumnName="GoogleMapsPlaceID" />
+          <ScalarProperty Name="Valuation" ColumnName="Valuation" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="GPS" ColumnName="GPS" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="SpendTime" ColumnName="SpendTime" />
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityActivityTypeMaps">
+      <EntityTypeMapping TypeName="OnATripModel.ActivityActivityTypeMap">
+        <MappingFragment StoreEntitySet="ActivityActivityTypeMap">
+          <ScalarProperty Name="ActivityTypeID" ColumnName="ActivityTypeID" />
+          <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+          <ScalarProperty Name="ActivityActivityTypeMapID" ColumnName="ActivityActivityTypeMapID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityRatings">
+      <EntityTypeMapping TypeName="OnATripModel.ActivityRating">
+        <MappingFragment StoreEntitySet="ActivityRating">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Points" ColumnName="Points" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+          <ScalarProperty Name="ActivityRatingId" ColumnName="ActivityRatingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityTypes">
+      <EntityTypeMapping TypeName="OnATripModel.ActivityType">
+        <MappingFragment StoreEntitySet="ActivityType">
+          <ScalarProperty Name="GoogleCode" ColumnName="GoogleCode" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="IconURL" ColumnName="IconURL" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ActivityTypeID" ColumnName="ActivityTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Logins">
+      <EntityTypeMapping TypeName="OnATripModel.Login">
+        <MappingFragment StoreEntitySet="Login">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LastHit" ColumnName="LastHit" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trips">
+      <EntityTypeMapping TypeName="OnATripModel.Trip">
+        <MappingFragment StoreEntitySet="Trip">
+          <ScalarProperty Name="TripCreatorID" ColumnName="TripCreatorID" />
+          <ScalarProperty Name="OriginalTripID" ColumnName="OriginalTripID" />
+          <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+          <ScalarProperty Name="ActivityTypeID" ColumnName="ActivityTypeID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TripId" ColumnName="TripId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="OnATripModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="Language" ColumnName="Language" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="countries">
+      <EntityTypeMapping TypeName="OnATripModel.country">
+        <MappingFragment StoreEntitySet="country">
+          <ScalarProperty Name="languages" ColumnName="languages" />
+          <ScalarProperty Name="currency" ColumnName="currency" />
+          <ScalarProperty Name="capital" ColumnName="capital" />
+          <ScalarProperty Name="continent" ColumnName="continent" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="native" ColumnName="native" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spCloneTrip" FunctionName="OnATripModel.Store.spCloneTrip" />
+  </EntityContainerMapping>
+</Mapping>

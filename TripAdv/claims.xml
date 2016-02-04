@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Permissions>
+  <Permission Resource  = "Activity" Action = "GetActivity,GetActivities,">
+    <Roles>owner,member</Roles>
+    <LogEvent></LogEvent>
+    <ItemID>id</ItemID>
+  </Permission>
+
+  <Permission Resource  = "Activity" Action = "CreateActivity,UpdateActivity,DeleteActivity,">
+    <Roles>owner</Roles>
+    <LogEvent></LogEvent>
+    <ItemID>id</ItemID>
+  </Permission>
+
+  <Permission Resource  = "Activity" Action = "GetTypes,GetCountries">
+    <Roles>everyone</Roles>
+    <LogEvent></LogEvent>
+    <ItemID>id</ItemID>
+  </Permission>
+
+  <Permission Resource  = "Trip" Action = "GetTrips,GetTrip,CreateTrip,CloneTrip">
+    <Roles>everyone</Roles>
+    <LogEvent></LogEvent>
+    <ItemID>id</ItemID>
+  </Permission>
+
+  <Permission Resource  = "Trip" Action = "UpdateTrip,DeleteTrip">
+    <Roles>owner</Roles>
+    <LogEvent></LogEvent>
+    <ItemID>id</ItemID>
+  </Permission>
+
+  <Permission Resource  = "User" Action = "Update,Delete">
+    <Roles>owner</Roles>
+    <LogEvent></LogEvent>
+    <ItemID>id</ItemID>
+  </Permission>
+
+
+
+</Permissions>

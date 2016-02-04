@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OnATripModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Activity">
+    <Key>
+      <PropertyRef Name="ActivityID" />
+    </Key>
+    <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityID" Type="int" />
+    <Property Name="SpendTime" Type="datetimeoffset" Precision="7" />
+    <Property Name="Title" Type="varchar(max)" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="GPS" Type="geography" />
+    <Property Name="URL" Type="varchar(max)" />
+    <Property Name="Priority" Type="tinyint" />
+    <Property Name="Contact" Type="varchar(max)" />
+    <Property Name="Valuation" Type="int" />
+    <Property Name="GoogleMapsPlaceID" Type="int" />
+    <Property Name="TripID" Type="int" Nullable="false" />
+    <Property Name="DiaryTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ActivityActivityTypeMap">
+    <Key>
+      <PropertyRef Name="ActivityActivityTypeMapID" />
+    </Key>
+    <Property Name="ActivityActivityTypeMapID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActivityID" Type="int" Nullable="false" />
+    <Property Name="ActivityTypeID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ActivityRating">
+    <Key>
+      <PropertyRef Name="ActivityRatingId" />
+    </Key>
+    <Property Name="ActivityRatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActivityId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Points" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="ActivityType">
+    <Key>
+      <PropertyRef Name="ActivityTypeID" />
+    </Key>
+    <Property Name="ActivityTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar(max)" />
+    <Property Name="IconURL" Type="varchar(max)" />
+    <Property Name="ParentID" Type="int" />
+    <Property Name="GoogleCode" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'OnATrip.dbo.country' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="country">
+    <Key>
+      <PropertyRef Name="code" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="native" />
+      <PropertyRef Name="phone" />
+      <PropertyRef Name="continent" />
+      <PropertyRef Name="capital" />
+      <PropertyRef Name="currency" />
+      <PropertyRef Name="languages" />
+    </Key>
+    <Property Name="code" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="native" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="phone" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="continent" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="capital" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="currency" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="languages" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="LoginId" />
+    </Key>
+    <Property Name="LoginId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Token" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastHit" Type="datetime" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Trip">
+    <Key>
+      <PropertyRef Name="TripId" />
+    </Key>
+    <Property Name="TripId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar(max)" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="ActivityTypeID" Type="int" />
+    <Property Name="IsPublic" Type="bit" Nullable="false" />
+    <Property Name="OriginalTripID" Type="int" />
+    <Property Name="TripCreatorID" Type="int" />
+  </EntityType>
+  <EntityType Name="TripMember">
+    <Key>
+      <PropertyRef Name="MemberID" />
+    </Key>
+    <Property Name="MemberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TripID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="varchar(max)" />
+    <Property Name="LastName" Type="varchar(max)" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="150" />
+    <Property Name="Language" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Activity_Trip">
+    <End Role="Trip" Type="Self.Trip" Multiplicity="1" />
+    <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trip">
+        <PropertyRef Name="TripId" />
+      </Principal>
+      <Dependent Role="Activity">
+        <PropertyRef Name="TripID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityActivityTypeMap_Activity">
+    <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
+    <End Role="ActivityActivityTypeMap" Type="Self.ActivityActivityTypeMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Activity">
+        <PropertyRef Name="ActivityID" />
+      </Principal>
+      <Dependent Role="ActivityActivityTypeMap">
+        <PropertyRef Name="ActivityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityActivityTypeMap_ActivityType">
+    <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="1" />
+    <End Role="ActivityActivityTypeMap" Type="Self.ActivityActivityTypeMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="ActivityTypeID" />
+      </Principal>
+      <Dependent Role="ActivityActivityTypeMap">
+        <PropertyRef Name="ActivityTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityType_ActivityType">
+    <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="0..1" />
+    <End Role="ActivityType1" Type="Self.ActivityType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="ActivityTypeID" />
+      </Principal>
+      <Dependent Role="ActivityType1">
+        <PropertyRef Name="ParentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trip_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Trip">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TripMember_Trip">
+    <End Role="Trip" Type="Self.Trip" Multiplicity="1" />
+    <End Role="TripMember" Type="Self.TripMember" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trip">
+        <PropertyRef Name="TripId" />
+      </Principal>
+      <Dependent Role="TripMember">
+        <PropertyRef Name="TripID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TripMember_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="TripMember" Type="Self.TripMember" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="TripMember">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="CheckAuthorization" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="resource" Type="varchar" Mode="In" />
+    <Parameter Name="action" Type="varchar" Mode="In" />
+    <Parameter Name="role" Type="varchar" Mode="In" />
+    <Parameter Name="userID" Type="numeric" Mode="In" />
+    <Parameter Name="itemID" Type="numeric" Mode="In" />
+  </Function>
+  <Function Name="spCloneTrip" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="tripId" Type="int" Mode="In" />
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+  </Function>
+  <EntityContainer Name="OnATripModelStoreContainer">
+    <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ActivityActivityTypeMap" EntityType="Self.ActivityActivityTypeMap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ActivityRating" EntityType="Self.ActivityRating" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trip" EntityType="Self.Trip" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TripMember" EntityType="Self.TripMember" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="country" EntityType="Self.country" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [country].[code] AS [code], 
+    [country].[name] AS [name], 
+    [country].[native] AS [native], 
+    [country].[phone] AS [phone], 
+    [country].[continent] AS [continent], 
+    [country].[capital] AS [capital], 
+    [country].[currency] AS [currency], 
+    [country].[languages] AS [languages]
+    FROM [dbo].[country] AS [country]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Activity_Trip" Association="Self.FK_Activity_Trip">
+      <End Role="Trip" EntitySet="Trip" />
+      <End Role="Activity" EntitySet="Activity" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityActivityTypeMap_Activity" Association="Self.FK_ActivityActivityTypeMap_Activity">
+      <End Role="Activity" EntitySet="Activity" />
+      <End Role="ActivityActivityTypeMap" EntitySet="ActivityActivityTypeMap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityActivityTypeMap_ActivityType" Association="Self.FK_ActivityActivityTypeMap_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityType" />
+      <End Role="ActivityActivityTypeMap" EntitySet="ActivityActivityTypeMap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityType_ActivityType" Association="Self.FK_ActivityType_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityType" />
+      <End Role="ActivityType1" EntitySet="ActivityType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_User" Association="Self.FK_Login_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Login" EntitySet="Login" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trip_User" Association="Self.FK_Trip_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Trip" EntitySet="Trip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TripMember_Trip" Association="Self.FK_TripMember_Trip">
+      <End Role="Trip" EntitySet="Trip" />
+      <End Role="TripMember" EntitySet="TripMember" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TripMember_User" Association="Self.FK_TripMember_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="TripMember" EntitySet="TripMember" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

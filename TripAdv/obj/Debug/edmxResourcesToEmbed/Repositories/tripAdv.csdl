@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OnATripModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="OnATripEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Activities" EntityType="OnATripModel.Activity" />
+    <EntitySet Name="ActivityActivityTypeMaps" EntityType="OnATripModel.ActivityActivityTypeMap" />
+    <EntitySet Name="ActivityRatings" EntityType="OnATripModel.ActivityRating" />
+    <EntitySet Name="ActivityTypes" EntityType="OnATripModel.ActivityType" />
+    <EntitySet Name="Logins" EntityType="OnATripModel.Login" />
+    <EntitySet Name="Trips" EntityType="OnATripModel.Trip" />
+    <EntitySet Name="Users" EntityType="OnATripModel.User" />
+    <AssociationSet Name="FK_Activity_Trip" Association="OnATripModel.FK_Activity_Trip">
+      <End Role="Trip" EntitySet="Trips" />
+      <End Role="Activity" EntitySet="Activities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityActivityTypeMap_Activity" Association="OnATripModel.FK_ActivityActivityTypeMap_Activity">
+      <End Role="Activity" EntitySet="Activities" />
+      <End Role="ActivityActivityTypeMap" EntitySet="ActivityActivityTypeMaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityActivityTypeMap_ActivityType" Association="OnATripModel.FK_ActivityActivityTypeMap_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityTypes" />
+      <End Role="ActivityActivityTypeMap" EntitySet="ActivityActivityTypeMaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityType_ActivityType" Association="OnATripModel.FK_ActivityType_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityTypes" />
+      <End Role="ActivityType1" EntitySet="ActivityTypes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_Login" Association="OnATripModel.FK_Login_Login">
+      <End Role="Login" EntitySet="Logins" />
+      <End Role="Login1" EntitySet="Logins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_User" Association="OnATripModel.FK_Login_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Login" EntitySet="Logins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trip_User" Association="OnATripModel.FK_Trip_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Trip" EntitySet="Trips" />
+    </AssociationSet>
+    <EntitySet Name="countries" EntityType="OnATripModel.country" />
+    <FunctionImport Name="spCloneTrip">
+      <Parameter Name="userId" Mode="In" Type="Int32" />
+      <Parameter Name="tripId" Mode="In" Type="Int32" />
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <EntitySet Name="TripMembers" EntityType="OnATripModel.TripMember" />
+    <FunctionImport Name="CheckAuthorization" ReturnType="Collection(Int32)">
+      <Parameter Name="resource" Mode="In" Type="String" />
+      <Parameter Name="action" Mode="In" Type="String" />
+      <Parameter Name="role" Mode="In" Type="String" />
+      <Parameter Name="userID" Mode="In" Type="Decimal" />
+      <Parameter Name="itemID" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <AssociationSet Name="FK_TripMember_Trip" Association="OnATripModel.FK_TripMember_Trip">
+      <End Role="Trip" EntitySet="Trips" />
+      <End Role="TripMember" EntitySet="TripMembers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TripMember_User" Association="OnATripModel.FK_TripMember_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="TripMember" EntitySet="TripMembers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Activity">
+    <Key>
+      <PropertyRef Name="ActivityID" />
+    </Key>
+    <Property Name="ActivityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityID" Type="Int32" />
+    <Property Name="SpendTime" Type="DateTimeOffset" Precision="7" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="GPS" Type="Geography" />
+    <Property Name="URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Priority" Type="Byte" />
+    <Property Name="Contact" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Valuation" Type="Int32" />
+    <Property Name="GoogleMapsPlaceID" Type="Int32" />
+    <Property Name="TripID" Type="Int32" Nullable="false" />
+    <Property Name="DiaryTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Trip" Relationship="OnATripModel.FK_Activity_Trip" FromRole="Activity" ToRole="Trip" />
+    <NavigationProperty Name="ActivityActivityTypeMaps" Relationship="OnATripModel.FK_ActivityActivityTypeMap_Activity" FromRole="Activity" ToRole="ActivityActivityTypeMap" />
+  </EntityType>
+  <EntityType Name="ActivityActivityTypeMap">
+    <Key>
+      <PropertyRef Name="ActivityActivityTypeMapID" />
+    </Key>
+    <Property Name="ActivityActivityTypeMapID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActivityID" Type="Int32" Nullable="false" />
+    <Property Name="ActivityTypeID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Activity" Relationship="OnATripModel.FK_ActivityActivityTypeMap_Activity" FromRole="ActivityActivityTypeMap" ToRole="Activity" />
+    <NavigationProperty Name="ActivityType" Relationship="OnATripModel.FK_ActivityActivityTypeMap_ActivityType" FromRole="ActivityActivityTypeMap" ToRole="ActivityType" />
+  </EntityType>
+  <EntityType Name="ActivityRating">
+    <Key>
+      <PropertyRef Name="ActivityRatingId" />
+    </Key>
+    <Property Name="ActivityRatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActivityId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Points" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ActivityType">
+    <Key>
+      <PropertyRef Name="ActivityTypeID" />
+    </Key>
+    <Property Name="ActivityTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IconURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ParentID" Type="Int32" />
+    <Property Name="GoogleCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ActivityActivityTypeMaps" Relationship="OnATripModel.FK_ActivityActivityTypeMap_ActivityType" FromRole="ActivityType" ToRole="ActivityActivityTypeMap" />
+    <NavigationProperty Name="ActivityType1" Relationship="OnATripModel.FK_ActivityType_ActivityType" FromRole="ActivityType" ToRole="ActivityType1" />
+    <NavigationProperty Name="ActivityType2" Relationship="OnATripModel.FK_ActivityType_ActivityType" FromRole="ActivityType1" ToRole="ActivityType" />
+  </EntityType>
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="LoginId" />
+    </Key>
+    <Property Name="LoginId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Token" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LastHit" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Login1" Relationship="OnATripModel.FK_Login_Login" FromRole="Login" ToRole="Login1" />
+    <NavigationProperty Name="Login2" Relationship="OnATripModel.FK_Login_Login" FromRole="Login1" ToRole="Login" />
+    <NavigationProperty Name="User" Relationship="OnATripModel.FK_Login_User" FromRole="Login" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Trip">
+    <Key>
+      <PropertyRef Name="TripId" />
+    </Key>
+    <Property Name="TripId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ActivityTypeID" Type="Int32" />
+    <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Activities" Relationship="OnATripModel.FK_Activity_Trip" FromRole="Trip" ToRole="Activity" />
+    <NavigationProperty Name="User" Relationship="OnATripModel.FK_Trip_User" FromRole="Trip" ToRole="User" />
+    <Property Name="OriginalTripID" Type="Int32" />
+    <Property Name="TripCreatorID" Type="Int32" />
+    <NavigationProperty Name="TripMembers" Relationship="OnATripModel.FK_TripMember_Trip" FromRole="Trip" ToRole="TripMember" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Language" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Logins" Relationship="OnATripModel.FK_Login_User" FromRole="User" ToRole="Login" />
+    <NavigationProperty Name="Trips" Relationship="OnATripModel.FK_Trip_User" FromRole="User" ToRole="Trip" />
+    <NavigationProperty Name="TripMembers" Relationship="OnATripModel.FK_TripMember_User" FromRole="User" ToRole="TripMember" />
+  </EntityType>
+  <Association Name="FK_Activity_Trip">
+    <End Type="OnATripModel.Trip" Role="Trip" Multiplicity="1" />
+    <End Type="OnATripModel.Activity" Role="Activity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trip">
+        <PropertyRef Name="TripId" />
+      </Principal>
+      <Dependent Role="Activity">
+        <PropertyRef Name="TripID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityActivityTypeMap_Activity">
+    <End Type="OnATripModel.Activity" Role="Activity" Multiplicity="1" />
+    <End Type="OnATripModel.ActivityActivityTypeMap" Role="ActivityActivityTypeMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Activity">
+        <PropertyRef Name="ActivityID" />
+      </Principal>
+      <Dependent Role="ActivityActivityTypeMap">
+        <PropertyRef Name="ActivityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityActivityTypeMap_ActivityType">
+    <End Type="OnATripModel.ActivityType" Role="ActivityType" Multiplicity="1" />
+    <End Type="OnATripModel.ActivityActivityTypeMap" Role="ActivityActivityTypeMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="ActivityTypeID" />
+      </Principal>
+      <Dependent Role="ActivityActivityTypeMap">
+        <PropertyRef Name="ActivityTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityType_ActivityType">
+    <End Type="OnATripModel.ActivityType" Role="ActivityType" Multiplicity="0..1" />
+    <End Type="OnATripModel.ActivityType" Role="ActivityType1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="ActivityTypeID" />
+      </Principal>
+      <Dependent Role="ActivityType1">
+        <PropertyRef Name="ParentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_Login">
+    <End Type="OnATripModel.Login" Role="Login" Multiplicity="1" />
+    <End Type="OnATripModel.Login" Role="Login1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Login">
+        <PropertyRef Name="LoginId" />
+      </Principal>
+      <Dependent Role="Login1">
+        <PropertyRef Name="LoginId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_User">
+    <End Type="OnATripModel.User" Role="User" Multiplicity="1" />
+    <End Type="OnATripModel.Login" Role="Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trip_User">
+    <End Type="OnATripModel.User" Role="User" Multiplicity="1" />
+    <End Type="OnATripModel.Trip" Role="Trip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Trip">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="country">
+    <Key>
+      <PropertyRef Name="code" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="native" />
+      <PropertyRef Name="phone" />
+      <PropertyRef Name="continent" />
+      <PropertyRef Name="capital" />
+      <PropertyRef Name="currency" />
+      <PropertyRef Name="languages" />
+    </Key>
+    <Property Name="code" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="native" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="phone" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="continent" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="capital" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="currency" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="languages" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TripMember">
+    <Key>
+      <PropertyRef Name="MemberID" />
+    </Key>
+    <Property Name="MemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TripID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Trip" Relationship="OnATripModel.FK_TripMember_Trip" FromRole="TripMember" ToRole="Trip" />
+    <NavigationProperty Name="User" Relationship="OnATripModel.FK_TripMember_User" FromRole="TripMember" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_TripMember_Trip">
+    <End Type="OnATripModel.Trip" Role="Trip" Multiplicity="1" />
+    <End Type="OnATripModel.TripMember" Role="TripMember" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trip">
+        <PropertyRef Name="TripId" />
+      </Principal>
+      <Dependent Role="TripMember">
+        <PropertyRef Name="TripID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TripMember_User">
+    <End Type="OnATripModel.User" Role="User" Multiplicity="1" />
+    <End Type="OnATripModel.TripMember" Role="TripMember" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="TripMember">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

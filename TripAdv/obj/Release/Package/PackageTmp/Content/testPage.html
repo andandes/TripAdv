@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <style>
+        ul {
+            margin-left: 1em;
+        }
+
+        .json-key {
+            font-weight: bold;
+        }
+        .category {
+            float:left;
+            width:250px;
+        }
+        .example {
+    width: 200px;
+    color: white;
+    background-color: #437086;
+    margin-top: 0px;
+    height: 25px;
+}
+    </style>
+</head>
+<body>
+    <script>
+        var CONSTSERVER = 'http://localhost:49822';
+        $(document).ready(function () {
+            $('#Send').click(function () {
+                var data = ($('#data').val() != "") ? JSON.parse($('#data').val()) : "";
+                var url = CONSTSERVER + $('#linkUrl').val();
+                var method = $('#method').val();    
+                sendData(url, method, data);
+            });
+
+            $('.example').click(function () {
+                var find = '\'';
+                var re = new RegExp(find, 'g');
+                var data = $(this).attr('data').replace(re, '"');
+
+                $('#data').val(data);
+                $('#linkUrl').val($(this).attr('link'));
+                $('#method').val($(this).attr('method'));
+            });
+
+
+        });
+
+        function sendData(sUrl, sType, oData)
+        {
+            var tkn = ($('#token').val() != '') ? $('#token').val() : $('[name="userToken"]').val();
+            $.ajax({
+                type: sType,
+                url: sUrl,
+                data: JSON.stringify(oData),
+                contentType: "application/json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", tkn);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $('#result').html(JSON.stringify(data));
+
+                    $('#result').css({ "color": "blue" });
+                },
+                error: function (data, textStatus, jqXHR) {
+
+                    $('#result').html(JSON.stringify(data));
+                    $('#result').css({ "color": "red" });
+                }
+            });
+        }
+
+        function visitObj($container, obj) {
+            var $ul = $('<ul>');
+
+            for (var prop in obj) {
+
+                var $li = $('<li>');
+                $li.append('<span class="json-key">' + prop + ': </span>');
+                if (typeof obj[prop] === "object") {
+                    visitObj($li, obj[prop]);
+                } else {
+                    $li.append('<span class="json-value">' + obj[prop] + '</span>');
+                }
+                $ul.append($li);
+            }
+            $container.append($ul);
+        }
+
+
+    </script>
+
+    Token  <input name="token" id="token" />
+    Role<select name="userToken">
+        <option value="DavidToken">David</option>
+    </select>
+
+    <hr />
+    <h1>Priklady</h1>
+
+    <div class="category">
+        <h3>Uživatel</h3>
+        
+        <button class="example" data="{'UserName':'david','Password':'David'}" link="/api/users/login" method="post">Přihlášení uživatele</button></br>
+        <button class="example" data="{'FirstName':'Dan', 'LastName':'Narval', 'UserName':'david2','Password':'heslo','Email':'daren@seznam.cz','Language':'czech'}" link="/api/users" method="post">Vytvor uzivatele</button></br>
+        <button class="example" data="" link="/api/users/2" method="delete">Smaz uzivatele</button></br>
+        <button class="example" data="{'UserId':'3','FirstName':'Dan2', 'LastName':'Narval2', 'UserName':'david3','Password':'heslo2','Email':'daren@seznam.cz','Language':'czech'}" link="/api/users" method="put">Uprav uzivatele</button></br>
+    </div>
+    <div class="category">
+        <h3>Výlety</h3>
+        <button class="example" data="" link="/api/trips" method="get">Nacti vsechny vylety</button></br>
+        <button class="example" data="" link="/api/trips/1" method="get">Nacti vylet</button></br>
+        <button class="example" data="{'UserId':1,'Name':'Pokusny vylet n','Description':'popisek n'}" link="/api/trips" method="post">Vytvor novy vylet</button></br>
+        <button class="example" data="{'TripId':1,'UserId':1,'Name':'Pokusny vylet 1 - upraveno','Description':'popisek 1 - upraveno'}" link="/api/trips/1" method="put">Uprav vylet</button></br>
+        <button class="example" data="" link="/api/trips/5" method="delete">Vymaz vylet</button></br>
+        <button class="example" data="{'startDate':'2017/08/10'}" link="/api/trips/1/clone" method="post">Vytvoř kopii výletu</button></br>
+    </div>
+    <div class="category">
+        <h3>Aktivity</h3>
+        <button class="example" data="" link="/api/activities/4" method="get">Načti aktivitu</button></br>
+        <button class="example" data="{'Title':'Nova aktivita','TripID':1,'description':'testovani vytvoreni nove aktivity','SpendTime':null,'DiaryTime':null,'gps':{'lon':4.4341414,'lat':5.0835494},'googleMapsPlaceID':1001,'contact':null,'priority':0}" link="/api/activities/1" method="post">Přidej aktivitu k výletu</button></br>
+        <button class="example" data="" link="/api/activities/8" method="delete">Smaž aktivitu</button></br>
+        <button class="example" data="{'Title':'Upravena aktivita','ActivityID':7,'TripID':1,'description':'popis stred Prahy','SpendTime':null,'DiaryTime':null,'gps':{'lon':4.4341414,'lat':5.0835494},'googleMapsPlaceID':1001,'contact':null,'priority':0}" link="/api/activities/6" method="put">Edituj aktivitu</button></br>
+    </div>
+    <div class="category">
+        <h3>Ostatní / Číselníky</h3>
+        <button class="example" data="" link="/api/countries" method="get">Načti všechny státy</button></br>
+        <button class="example" data="" link="/api/types" method="get">Načti všecny typy aktivit</button></br>
+
+    </div>
+    <div style="clear:both"></div>
+    
+
+    
+    Link: <input type="text" id="linkUrl" style="width:100%" /><br />
+    Data: <textarea id="data" style="width:100%; height:500px"></textarea><br />
+    Method: <select id="method"><option value="get">Get</option><option value="put">Put</option><option value="post">Post</option><option value="delete">Delete</option></select>
+    <input type="button" id="Send" value="Send" />
+    <hr />
+    <div id="result"></div>
+    <hr />
+
+
+
+
+</body>
+</html>
