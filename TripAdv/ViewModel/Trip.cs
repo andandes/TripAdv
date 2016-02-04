@@ -23,7 +23,7 @@ namespace TripAdv.ViewModel
     
     public class ViewActivity
     {
-    
+        public DateTime Created { get; set; }
         public string Title { get; set; }
         public int ActivityID { get; set; }
         public int TripID { get; set; }
